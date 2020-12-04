@@ -28,6 +28,12 @@ class DictionariesList extends Component {
     }));
   };
 
+  editDictionary = () => {
+    this.setState((prevState) => ({
+      isModalOpen: !prevState.isModalOpen,
+    }));
+  };
+
   render() {
     const { isModalOpen } = this.state;
     const { dictionaries } = this.props;
@@ -44,6 +50,7 @@ class DictionariesList extends Component {
               imageUrl={item.image}
               key={item.id}
               content={item.content}
+              editDictionary={this.editDictionary}
             />
           ))}
         </StyledWrapper>

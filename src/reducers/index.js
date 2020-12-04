@@ -22,7 +22,8 @@ const initialState = {
     {
       id: 2,
       name: 'Swedish vocabulary',
-      image: 'https://images-na.ssl-images-amazon.com/images/I/61iE2zO0wzL._AC_SL1500_.jpg',
+      image:
+        'https://upload.wikimedia.org/wikipedia/en/thumb/4/4c/Flag_of_Sweden.svg/1200px-Flag_of_Sweden.svg.png',
       content: [
         {
           id: 1,
@@ -61,7 +62,18 @@ const initialState = {
 };
 
 const rootReducer = (state = initialState, action) => {
-  return state;
+  switch (action.type) {
+    case 'ADD_ITEM':
+      return {
+        dictionaries: [...state.dictionaries, action.payload.item],
+      };
+    case 'REMOVE_ITEM':
+      return {
+        dictionaries: [...state.dictionaries.filter((item) => item.id !== action.payload.id)],
+      };
+    default:
+      return state;
+  }
 };
 
 export default rootReducer;

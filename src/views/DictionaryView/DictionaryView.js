@@ -11,7 +11,7 @@ const StyledButton = styled(ButtonIcon)`
   ${({ learn }) =>
     learn &&
     css`
-      position: absolute;
+      position: fixed;
       top: 150px;
       right: 40px;
     `}

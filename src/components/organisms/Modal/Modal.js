@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import Heading from '../../atoms/Heading/Heading';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
+import { connect } from 'react-redux';
+import { addItem as addItemAction } from '../../../actions';
+import { Formik, Form } from 'formik';
 
 const StyledWrapper = styled.div`
-  position: absolute;
-  display: flex;
-  top: 65%;
+  position: fixed;
+  top: 450px;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 800px;
@@ -17,7 +19,6 @@ const StyledWrapper = styled.div`
   border-radius: 30px;
   border: none;
   box-shadow: 0 10px 30px -5px hsla(0, 0%, 0%, 0.3);
-  transition: all 5s ease-in-out;
   z-index: 9999;
 `;
 
@@ -62,7 +63,7 @@ const StyledHeading = styled(Heading)`
   top: 60px;
 `;
 
-const StyledForm = styled.form`
+const StyledForm = styled(Form)`
   margin-top: 150px;
   width: 80%;
   height: 300px;
@@ -81,16 +82,56 @@ const StyledButton = styled(Button)`
   margin-top: 60px;
 `;
 
-const Modal = ({ handleModal }) => (
+const Modal = ({ handleModal, addItem }) => (
   <StyledWrapper>
     <StyledCloseButton onClick={handleModal} />
     <StyledHeading>Create a new dictionary</StyledHeading>
-    <StyledForm>
-      <StyledInput placeholder="Name" />
-      <StyledInput placeholder="Dictionary's image url" />
-      <StyledButton>Create</StyledButton>
-    </StyledForm>
+    <Formik
+      initialValues={{
+        name: '',
+        image: '',
+      }}
+      onSubmit={(values) => {
+        if (values.image === '') {
+          values.image =
+            'https://images.unsplash.com/photo-1562917616-88a9472dbfe5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
+        }
+        addItem({
+          name: values.name,
+          image: values.image,
+          content: [],
+        });
+        handleModal();
+      }}
+    >
+      {({ values, handleChange, handleBlur }) => (
+        <StyledForm autoComplete="off">
+          <StyledInput
+            type="text"
+            name="name"
+            placeholder="Name"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.name}
+            required
+          />
+          <StyledInput
+            type="text"
+            name="image"
+            placeholder="Dictionary's image url"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            value={values.image}
+          />
+          <StyledButton type="submit">Create</StyledButton>
+        </StyledForm>
+      )}
+    </Formik>
   </StyledWrapper>
 );
 
-export default Modal;
+const mapDispatchToProps = (dispatch) => ({
+  addItem: (content) => dispatch(addItemAction(content)),
+});
+
+export default connect(null, mapDispatchToProps)(Modal);

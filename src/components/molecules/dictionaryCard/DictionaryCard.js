@@ -55,7 +55,7 @@ class DictionaryCard extends Component {
   };
   handleCardClick = () => this.setState({ redirect: true });
   render() {
-    const { title, imageUrl, id } = this.props;
+    const { title, imageUrl, id, isModalOpen } = this.props;
     if (this.state.redirect) {
       return <Redirect to={`/dictionary/${id}`} />;
     }
@@ -63,7 +63,7 @@ class DictionaryCard extends Component {
       <StyledWrapper onClick={this.handleCardClick}>
         <StyledHeader>{title}</StyledHeader>
         <StyledAvatar color="yellow" src={imageUrl} />
-        <StyledHiddenMenu />
+        <StyledHiddenMenu id={id} editDictionary={this.props.editDictionary} />
       </StyledWrapper>
     );
   }
