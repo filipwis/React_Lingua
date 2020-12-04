@@ -16,7 +16,7 @@ const LoggedUserView = ({ children }) => (
 );
 
 LoggedUserView.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]).isRequired,
 };
 
 export default LoggedUserView;

@@ -1,50 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import LoggedUserView from '../../templates/LoggedUserView';
 import DictionaryCard from '../../components/molecules/dictionaryCard/DictionaryCard';
 import ButtonIcon from '../../components/atoms/ButtonIcon/ButtonIcon';
 import Modal from '../../components/organisms/Modal/Modal';
-
-const dictionaries = [
-  {
-    id: 1,
-    name: 'Spanish vocabulary',
-    image: 'https://www.flagdetective.com/images/download/spain-state-hi.jpg',
-    content: [
-      {
-        id: 1,
-        word: 'uno',
-        translation: 'jeden',
-        known: false,
-      },
-      {
-        id: 2,
-        word: 'dos',
-        translation: 'dwa',
-        known: false,
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Swedish vocabulary',
-    image: 'https://images-na.ssl-images-amazon.com/images/I/61iE2zO0wzL._AC_SL1500_.jpg',
-    content: [
-      {
-        id: 1,
-        word: 'da',
-        translation: 'nie wiem co to znaczy',
-        known: false,
-      },
-      {
-        id: 2,
-        word: 'jalapenos',
-        translation: 'to nie po szwecku',
-        known: false,
-      },
-    ],
-  },
-];
 
 const StyledActionButton = styled(ButtonIcon)`
   position: fixed;
@@ -70,6 +30,8 @@ class DictionariesList extends Component {
 
   render() {
     const { isModalOpen } = this.state;
+    const { dictionaries } = this.props;
+
     return (
       <LoggedUserView>
         {isModalOpen && <Modal handleModal={this.handleModal} />}
@@ -77,6 +39,7 @@ class DictionariesList extends Component {
         <StyledWrapper isModalOpen={isModalOpen}>
           {dictionaries.map((item) => (
             <DictionaryCard
+              id={item.id}
               title={item.name}
               imageUrl={item.image}
               key={item.id}
@@ -89,4 +52,9 @@ class DictionariesList extends Component {
   }
 }
 
-export default DictionariesList;
+const mapStateToProps = (state) => {
+  const { dictionaries } = state;
+  return { dictionaries };
+};
+
+export default connect(mapStateToProps)(DictionariesList);

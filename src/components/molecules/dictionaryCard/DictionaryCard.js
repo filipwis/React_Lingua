@@ -55,9 +55,9 @@ class DictionaryCard extends Component {
   };
   handleCardClick = () => this.setState({ redirect: true });
   render() {
-    const { title, imageUrl } = this.props;
+    const { title, imageUrl, id } = this.props;
     if (this.state.redirect) {
-      return <Redirect to="/dictionary" />;
+      return <Redirect to={`/dictionary/${id}`} />;
     }
     return (
       <StyledWrapper onClick={this.handleCardClick}>
