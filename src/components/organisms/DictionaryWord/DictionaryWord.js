@@ -9,7 +9,6 @@ const StyledWrapper = styled.div`
   flex-direction: row;
   width: 680px;
   height: 60px;
-  /* border: 1px solid; */
 `;
 
 const StyledWordInput = styled(WordInput)``;

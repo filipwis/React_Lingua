@@ -50,10 +50,10 @@ const StyledParagraph = styled.p`
   text-transform: uppercase;
 `;
 
-const DictionaryTitle = () => (
+const DictionaryTitle = ({ title }) => (
   <StyledWrapper>
     <StyledAvatar src="https://images.unsplash.com/photo-1562917616-88a9472dbfe5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" />
-    <StyledTitle black>Dictionary Title</StyledTitle>
+    <StyledTitle black>Dictionary name</StyledTitle>
     <StyledProgresBorder>
       <StyledPercentageContent />
     </StyledProgresBorder>

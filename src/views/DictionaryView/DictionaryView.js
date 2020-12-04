@@ -18,20 +18,32 @@ const StyledButton = styled(ButtonIcon)`
 `;
 
 const StyledWrapper = styled.div`
+  @keyframes appear {
+    0% {
+      opacity: 0;
+      top: 35px;
+    }
+    100% {
+      opacity: 1;
+      top: 0;
+    }
+  }
+
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+  animation: appear 1s ease;
 `;
 
 const StyledInputs = styled(DictionaryWord)``;
 
-const DictionaryView = () => (
+const DictionaryView = ({ title, imageUrl, content }) => (
   <>
     <LoggedUserView />
-    <DictionaryTitle />
+    <DictionaryTitle title={title} />
     <StyledButton learn>Start to learn</StyledButton>
     <StyledButton icon={switchIcon} />
     <StyledWrapper>
