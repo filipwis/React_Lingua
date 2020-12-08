@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import dotsIcon from '../../../assets/icons/dots.svg';
 import { connect } from 'react-redux';
-import { removeItem as removeItemAction } from '../../../actions';
+import { removeDictionary as removeDictionaryAction } from '../../../actions';
 
 const StyledDotsIcon = styled.div`
   position: absolute;
@@ -37,6 +37,8 @@ const StyledButton = styled.button`
   border: none;
   border-bottom: 1px solid white;
   align-items: center;
+  font-family: 'Montserrat';
+  font-weight: ${({ theme }) => theme.medium};
 
   :hover {
     background: #dcd0d0;
@@ -56,7 +58,7 @@ class HiddenDotsMenu extends Component {
 
   render() {
     const { isMenuOpened } = this.state;
-    const { id, removeItem } = this.props;
+    const { id, removeDictionary } = this.props;
 
     return (
       <>
@@ -67,7 +69,7 @@ class HiddenDotsMenu extends Component {
               onMouseLeave={this.handleButtonAppear}
             >
               <StyledListOptions>
-                <StyledButton onClick={() => removeItem(id)}>Remove</StyledButton>
+                <StyledButton onClick={() => removeDictionary(id)}>Remove</StyledButton>
               </StyledListOptions>
             </StyledList>
           </>
@@ -83,12 +85,12 @@ class HiddenDotsMenu extends Component {
 }
 
 HiddenDotsMenu.propTypes = {
-  id: PropTypes.number.isRequired,
-  removeItem: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired,
+  removeDictionary: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  removeItem: (id) => dispatch(removeItemAction(id)),
+  removeDictionary: (id) => dispatch(removeDictionaryAction(id)),
 });
 
 export default connect(null, mapDispatchToProps)(HiddenDotsMenu);

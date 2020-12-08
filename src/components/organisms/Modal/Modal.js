@@ -3,10 +3,20 @@ import Heading from '../../atoms/Heading/Heading';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
 import { connect } from 'react-redux';
-import { addItem as addItemAction } from '../../../actions';
+import { addDictionary as addDictionaryAction } from '../../../actions';
 import { Formik, Form } from 'formik';
 
 const StyledWrapper = styled.div`
+  @keyframes modalAppear {
+    0% {
+      opacity: 0;
+      top: 350px;
+    }
+    100% {
+      opacity: 1;
+      top: 450;
+    }
+  }
   position: fixed;
   top: 450px;
   left: 50%;
@@ -20,6 +30,7 @@ const StyledWrapper = styled.div`
   border: none;
   box-shadow: 0 10px 30px -5px hsla(0, 0%, 0%, 0.3);
   z-index: 9999;
+  animation: modalAppear 1s ease;
 `;
 
 const StyledCloseButton = styled.button`
@@ -82,7 +93,7 @@ const StyledButton = styled(Button)`
   margin-top: 60px;
 `;
 
-const Modal = ({ handleModal, addItem }) => (
+const Modal = ({ handleModal, addDictionary }) => (
   <StyledWrapper>
     <StyledCloseButton onClick={handleModal} />
     <StyledHeading>Create a new dictionary</StyledHeading>
@@ -96,7 +107,7 @@ const Modal = ({ handleModal, addItem }) => (
           values.image =
             'https://images.unsplash.com/photo-1562917616-88a9472dbfe5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
         }
-        addItem({
+        addDictionary({
           name: values.name,
           image: values.image,
           content: [],
@@ -131,7 +142,7 @@ const Modal = ({ handleModal, addItem }) => (
 );
 
 const mapDispatchToProps = (dispatch) => ({
-  addItem: (content) => dispatch(addItemAction(content)),
+  addDictionary: (content) => dispatch(addDictionaryAction(content)),
 });
 
 export default connect(null, mapDispatchToProps)(Modal);

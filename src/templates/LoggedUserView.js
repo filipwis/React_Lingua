@@ -1,7 +1,7 @@
 import React from 'react';
 import Bar from '../components/organisms/Bar/Bar';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const StyledWrapper = styled.div`
   position: relative;
@@ -16,7 +16,8 @@ const LoggedUserView = ({ children }) => (
 );
 
 LoggedUserView.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]).isRequired,
+  // children: PropTypes.oneOfType([PropTypes.element, PropTypes.node]).isRequired,
+  // children: PropTypes.node.isRequired,
 };
 
 export default LoggedUserView;

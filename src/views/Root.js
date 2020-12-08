@@ -1,10 +1,11 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import store from '../../store';
-import MainTemplate from '../../templates/MainTemplate';
-import DictionariesList from '../../views/DictionariesList/DictionariesList';
-import DictionaryView from '../DictionaryView/DictionaryView';
+import store from '../store';
+import MainTemplate from '../templates/MainTemplate';
+import DictionariesList from '../views/DictionariesList';
+import DictionaryView from './DictionaryView';
+import LoginRegisterView from './LoginRegisterView';
 
 const Root = () => (
   <Provider store={store}>
@@ -12,6 +13,7 @@ const Root = () => (
       <MainTemplate>
         <Switch>
           <Route exact path="/" component={DictionariesList} />
+          <Route exact path="/login" component={LoginRegisterView} />
           <Route path="/dictionary/:id" component={DictionaryView} />
         </Switch>
       </MainTemplate>

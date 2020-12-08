@@ -3,31 +3,43 @@ import Avatar from '../../atoms/Avatar/Avatar';
 import Heading from '../../atoms/Heading/Heading';
 
 const StyledWrapper = styled.div`
+  @keyframes appear {
+    0% {
+      opacity: 0;
+      top: 35px;
+    }
+    100% {
+      opacity: 1;
+      top: 0;
+    }
+  }
   position: relative;
+  display: fixed;
   width: auto;
   height: 130px;
   border: 1px solid transparent;
+  animation: appear 1s ease;
 `;
 
 const StyledAvatar = styled(Avatar)`
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 130px;
+  height: 130px;
   top: 10px;
   left: 25px;
   border: 3px solid ${({ theme }) => theme.yellow};
 `;
 
 const StyledTitle = styled(Heading)`
-  margin-top: 30px;
-  margin-left: 140px;
+  margin-top: 40px;
+  margin-left: 165px;
   font-size: 25px;
 `;
 
 const StyledProgresBorder = styled.div`
   position: absolute;
-  top: 60px;
-  left: 140px;
+  top: 70px;
+  left: 165px;
   width: 260px;
   height: 10px;
   border: 1px solid ${({ theme }) => theme.grey};
@@ -44,16 +56,17 @@ const StyledPercentageContent = styled.div`
 `;
 
 const StyledParagraph = styled.p`
-  margin: 15px 140px;
+  position: absolute;
+  margin: 85px 165px;
   font-size: 12px;
   font-weight: ${({ theme }) => theme.regular};
   text-transform: uppercase;
 `;
 
-const DictionaryTitle = ({ title }) => (
+const DictionaryTitle = ({ title, image }) => (
   <StyledWrapper>
-    <StyledAvatar src="https://images.unsplash.com/photo-1562917616-88a9472dbfe5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" />
-    <StyledTitle black>Dictionary name</StyledTitle>
+    <StyledAvatar src={image} />
+    <StyledTitle black>{title}</StyledTitle>
     <StyledProgresBorder>
       <StyledPercentageContent />
     </StyledProgresBorder>

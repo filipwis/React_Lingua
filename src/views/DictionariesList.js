@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import LoggedUserView from '../../templates/LoggedUserView';
-import DictionaryCard from '../../components/molecules/dictionaryCard/DictionaryCard';
-import ButtonIcon from '../../components/atoms/ButtonIcon/ButtonIcon';
-import Modal from '../../components/organisms/Modal/Modal';
+import LoggedUserView from '../templates/LoggedUserView';
+import DictionaryCard from '../components/molecules/DictionaryCard/DictionaryCard';
+import ButtonIcon from '../components/atoms/ButtonIcon/ButtonIcon';
+import Modal from '../components/organisms/Modal/Modal';
 
 const StyledActionButton = styled(ButtonIcon)`
   position: fixed;
@@ -15,6 +15,24 @@ const StyledActionButton = styled(ButtonIcon)`
 const StyledWrapper = styled.div`
   padding-top: 50px;
   opacity: ${({ isModalOpen }) => (isModalOpen ? '50%' : '100%')};
+`;
+
+const StyledEmptyText = styled.div`
+  @keyframes appear {
+    0% {
+      opacity: 0;
+      top: 35px;
+    }
+    100% {
+      opacity: 1;
+      top: 0;
+    }
+  }
+
+  padding: 0 35px;
+  font-family: 'Montserrat';
+  font-size: 25px;
+  animation: appear 1s ease;
 `;
 
 class DictionariesList extends Component {
@@ -43,16 +61,20 @@ class DictionariesList extends Component {
         {isModalOpen && <Modal handleModal={this.handleModal} />}
         <StyledActionButton roundPlus onClick={this.handleModal} />
         <StyledWrapper isModalOpen={isModalOpen}>
-          {dictionaries.map((item) => (
-            <DictionaryCard
-              id={item.id}
-              title={item.name}
-              imageUrl={item.image}
-              key={item.id}
-              content={item.content}
-              editDictionary={this.editDictionary}
-            />
-          ))}
+          {dictionaries.length ? (
+            dictionaries.map((item) => (
+              <DictionaryCard
+                id={item.id}
+                title={item.name}
+                imageUrl={item.image}
+                key={item.id}
+                content={item.content}
+                editDictionary={this.editDictionary}
+              />
+            ))
+          ) : (
+            <StyledEmptyText>Create a new dictionary to expand your horizons... 🌍</StyledEmptyText>
+          )}
         </StyledWrapper>
       </LoggedUserView>
     );

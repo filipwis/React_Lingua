@@ -1,32 +1,93 @@
-import React from 'react';
-import styled from 'styled-components';
-import WordInput from '../../atoms/Input/WordInput';
+import styled, { css } from 'styled-components';
+import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
+import editIcon from '../../../assets/icons/edit.svg';
 
 const StyledWrapper = styled.div`
+  padding: 0px 80px 0px 20px;
+  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   flex-direction: row;
-  width: 680px;
-  height: 60px;
+  width: 600px;
+  height: 90px;
+  /* border: 1px solid; */
 `;
 
-const StyledWordInput = styled(WordInput)``;
-
-const StyledPharagraph = styled.p`
+const StyledWord = styled.p`
+  width: 200px;
+  /* height: 60px; */
   display: flex;
-  padding: 0 25px;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   text-align: center;
-  font-size: 25px;
+  margin: 24px 0;
+  position: relative;
+  text-transform: uppercase;
+
+  ${({ noPadding }) =>
+    noPadding &&
+    css`
+      width: 15px;
+      padding: 30px;
+      font-size: 25px;
+    `}
 `;
 
-const DictionaryWord = () => (
+const StyledCloseButton = styled.button`
+  width: 30px;
+  height: 30px;
+  background: ${({ theme }) => theme.yellow};
+  border-radius: 5px;
+  border: none;
+  position: absolute;
+  right: 15px;
+  top: 25px;
+
+  &::before,
+  &::after {
+    content: '';
+    width: 18px;
+    height: 2px;
+    position: absolute;
+    background: white;
+    display: block;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
+    transform-origin: 50%;
+  }
+
+  &::before {
+    transform: rotate(45deg);
+  }
+
+  &::after {
+    transform: rotate(-45deg);
+  }
+`;
+
+const StyledEditIcon = styled(ButtonIcon)`
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  border-radius: 5px;
+  background-color: ${({ theme }) => theme.yellow};
+  background-size: 25px 25px;
+  right: 55px;
+  top: 25px;
+`;
+
+const DictionaryWord = ({ word, translation }) => (
   <StyledWrapper>
-    <StyledWordInput placeholder="Word" />
-    <StyledPharagraph>-</StyledPharagraph>
-    <StyledWordInput placeholder="Translation" />
+    <StyledWord>{word}</StyledWord>
+    <StyledWord noPadding>-</StyledWord>
+    <StyledWord>{translation}</StyledWord>
+    <StyledEditIcon icon={editIcon} />
+    <StyledCloseButton />
   </StyledWrapper>
 );
 
