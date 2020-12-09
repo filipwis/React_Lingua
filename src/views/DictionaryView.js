@@ -61,7 +61,7 @@ const StyledEmptyText = styled.div`
 
 class DictionaryView extends Component {
   state = {
-    isWordBarVisible: true,
+    isWordBarVisible: false,
     words: [
       {
         word: '',
@@ -75,13 +75,28 @@ class DictionaryView extends Component {
     this.setState((prevState) => ({ isWordBarVisible: !prevState.isWordBarVisible }));
   };
 
+  getKnownWords = () => {
+    const [dict] = this.props.dictionary;
+    let i = 0;
+    dict.content.forEach((element) => {
+      element.known && i++;
+    });
+    return i;
+  };
+
   render() {
     const [currentDictionary] = this.props.dictionary;
     const { isWordBarVisible } = this.state;
+    this.getKnownWords();
     return (
       <>
         <LoggedUserView />
-        <DictionaryTitle image={currentDictionary.image} title={currentDictionary.name} />
+        <DictionaryTitle
+          image={currentDictionary.image}
+          title={currentDictionary.name}
+          knownWords={this.getKnownWords()}
+          wordsCount={currentDictionary.content.length}
+        />
         <StyledButton learn>Start to learn</StyledButton>
         <StyledWrapper>
           {currentDictionary.content.length ? (

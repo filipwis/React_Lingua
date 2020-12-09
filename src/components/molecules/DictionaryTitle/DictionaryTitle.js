@@ -49,7 +49,7 @@ const StyledProgresBorder = styled.div`
 const StyledPercentageContent = styled.div`
   position: absolute;
   height: 9px;
-  width: 5px;
+  width: ${({ knownWords, wordsCount }) => (knownWords * 260) / wordsCount}px;
   border: none;
   border-radius: 20px;
   background-color: ${({ theme }) => theme.cyan};
@@ -63,12 +63,12 @@ const StyledParagraph = styled.p`
   text-transform: uppercase;
 `;
 
-const DictionaryTitle = ({ title, image }) => (
+const DictionaryTitle = ({ title, image, knownWords, wordsCount }) => (
   <StyledWrapper>
     <StyledAvatar src={image} />
     <StyledTitle black>{title}</StyledTitle>
     <StyledProgresBorder>
-      <StyledPercentageContent />
+      <StyledPercentageContent knownWords={knownWords} wordsCount={wordsCount} />
     </StyledProgresBorder>
     <StyledParagraph>learn from beginning</StyledParagraph>
   </StyledWrapper>

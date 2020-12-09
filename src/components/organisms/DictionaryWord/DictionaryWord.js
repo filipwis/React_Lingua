@@ -11,12 +11,10 @@ const StyledWrapper = styled.div`
   flex-direction: row;
   width: 600px;
   height: 90px;
-  /* border: 1px solid; */
 `;
 
 const StyledWord = styled.p`
   width: 200px;
-  /* height: 60px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,23 +68,22 @@ const StyledCloseButton = styled.button`
   }
 `;
 
-const StyledEditIcon = styled(ButtonIcon)`
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  border-radius: 5px;
-  background-color: ${({ theme }) => theme.yellow};
-  background-size: 25px 25px;
-  right: 55px;
-  top: 25px;
-`;
+// const StyledEditIcon = styled(ButtonIcon)`
+//   width: 30px;
+//   height: 30px;
+//   position: absolute;
+//   border-radius: 5px;
+//   background-color: ${({ theme }) => theme.yellow};
+//   background-size: 25px 25px;
+//   right: 55px;
+//   top: 25px;
+// `;
 
 const DictionaryWord = ({ word, translation }) => (
   <StyledWrapper>
     <StyledWord>{word}</StyledWord>
     <StyledWord noPadding>-</StyledWord>
     <StyledWord>{translation}</StyledWord>
-    <StyledEditIcon icon={editIcon} />
     <StyledCloseButton />
   </StyledWrapper>
 );
