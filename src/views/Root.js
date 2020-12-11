@@ -6,6 +6,7 @@ import MainTemplate from '../templates/MainTemplate';
 import DictionariesList from '../views/DictionariesList';
 import DictionaryView from './DictionaryView';
 import LoginRegisterView from './LoginRegisterView';
+import LearningView from './LearningView';
 
 const Root = () => (
   <Provider store={store}>
@@ -14,7 +15,8 @@ const Root = () => (
         <Switch>
           <Route exact path="/" component={DictionariesList} />
           <Route exact path="/login" component={LoginRegisterView} />
-          <Route path="/dictionary/:id" component={DictionaryView} />
+          <Route path="/learning/:id" component={LearningView} />
+          <Route exact path="/dictionary/:id" component={DictionaryView} />
         </Switch>
       </MainTemplate>
     </BrowserRouter>

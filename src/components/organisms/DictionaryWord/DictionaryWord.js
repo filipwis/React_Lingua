@@ -1,6 +1,8 @@
 import styled, { css } from 'styled-components';
+import { connect } from 'react-redux';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
 import editIcon from '../../../assets/icons/edit.svg';
+import { removeWord as removeWordAction } from '../../../actions';
 
 const StyledWrapper = styled.div`
   padding: 0px 80px 0px 20px;
@@ -79,13 +81,17 @@ const StyledCloseButton = styled.button`
 //   top: 25px;
 // `;
 
-const DictionaryWord = ({ word, translation }) => (
+const DictionaryWord = ({ word, translation, removeWord, id }) => (
   <StyledWrapper>
     <StyledWord>{word}</StyledWord>
     <StyledWord noPadding>-</StyledWord>
     <StyledWord>{translation}</StyledWord>
-    <StyledCloseButton />
+    <StyledCloseButton onClick={() => removeWord(id)} />
   </StyledWrapper>
 );
 
-export default DictionaryWord;
+const mapDispatchToProps = (dispatch) => ({
+  removeWord: (id) => dispatch(removeWordAction(id)),
+});
+
+export default connect(null, mapDispatchToProps)(DictionaryWord);

@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Formik, Form } from 'formik';
+import { connect } from 'react-redux';
 import Button from '../../atoms/Button/Button';
 import arrowLeftIcon from '../../../assets/icons/arrowLeft.svg';
 import arrowRightIcon from '../../../assets/icons/arrowRight.svg';
 import ButtonIcon from '../../atoms/ButtonIcon/ButtonIcon';
+import { addWord as addWordAction } from '../../../actions';
 
 const StyledWrapper = styled.div`
   position: fixed;
@@ -65,8 +67,12 @@ const StyledInput = styled.input`
   line-height: 22px;
   width: 100%;
   background: none;
+  color: white;
   text-transform: uppercase;
   text-align: center;
+  ::placeholder {
+    color: white;
+  }
 
   :focus {
     outline: none;
@@ -104,14 +110,25 @@ const StyledArrow = styled(ButtonIcon)`
   }
 `;
 
-const DictionaryWordInput = ({ word, translation, isVisible, handleBar }) => (
+const DictionaryWordInput = ({ isVisible, handleBar, addWord, dictID }) => (
   <Formik
     initialValues={{
-      word: word,
-      translation: translation,
+      word: '',
+      translation: '',
     }}
-    onSubmit={(values) => {
-      console.log('hello');
+    onSubmit={(values, actions) => {
+      addWord({
+        word: values.word,
+        translation: values.translation,
+        known: false,
+        dictID,
+      });
+      actions.resetForm({
+        values: {
+          word: '',
+          translation: '',
+        },
+      });
     }}
   >
     {({ values, handleChange, handleBlur, onSubmit }) => (
@@ -139,6 +156,7 @@ const DictionaryWordInput = ({ word, translation, isVisible, handleBar }) => (
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.translation}
+              onSubmit={onSubmit}
               required
             />
             <StyledBar />
@@ -155,4 +173,8 @@ const DictionaryWordInput = ({ word, translation, isVisible, handleBar }) => (
   </Formik>
 );
 
-export default DictionaryWordInput;
+const mapDispatchToProps = (dispatch) => ({
+  addWord: (content, dictID) => dispatch(addWordAction(content, dictID)),
+});
+
+export default connect(null, mapDispatchToProps)(DictionaryWordInput);

@@ -46,12 +46,6 @@ class DictionariesList extends Component {
     }));
   };
 
-  editDictionary = () => {
-    this.setState((prevState) => ({
-      isModalOpen: !prevState.isModalOpen,
-    }));
-  };
-
   render() {
     const { isModalOpen } = this.state;
     const { dictionaries } = this.props;
@@ -63,14 +57,7 @@ class DictionariesList extends Component {
         <StyledWrapper isModalOpen={isModalOpen}>
           {dictionaries.length ? (
             dictionaries.map((item) => (
-              <DictionaryCard
-                id={item.id}
-                title={item.name}
-                imageUrl={item.image}
-                key={item.id}
-                content={item.content}
-                editDictionary={this.editDictionary}
-              />
+              <DictionaryCard id={item.id} title={item.name} imageUrl={item.image} key={item.id} />
             ))
           ) : (
             <StyledEmptyText>Create a new dictionary to expand your horizons... 🌍</StyledEmptyText>

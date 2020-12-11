@@ -2,6 +2,8 @@ import Axios from 'axios';
 
 export const REMOVE_DICTIONARY = 'REMOVE_DICTIONARY';
 export const ADD_DICTIONARY = 'ADD_DICTIONARY';
+export const ADD_WORD = 'ADD_WORD';
+export const REMOVE_WORD = 'REMOVE_WORD';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAILURE = 'AUTH_FAILURE';
@@ -42,6 +44,30 @@ export const addDictionary = (content) => {
         id: getId(),
         ...content,
       },
+    },
+  };
+};
+
+export const addWord = (content) => {
+  const getId = () => `
+    _${Math.random().toString(36).substr(2, 9)};
+    `;
+  return {
+    type: ADD_WORD,
+    payload: {
+      item: {
+        id: getId(),
+        ...content,
+      },
+    },
+  };
+};
+
+export const removeWord = (id) => {
+  return {
+    type: REMOVE_WORD,
+    payload: {
+      id,
     },
   };
 };

@@ -31,14 +31,14 @@ const StyledAvatar = styled(Avatar)`
 `;
 
 const StyledTitle = styled(Heading)`
-  margin-top: 40px;
+  margin-top: 50px;
   margin-left: 165px;
   font-size: 25px;
 `;
 
 const StyledProgresBorder = styled.div`
   position: absolute;
-  top: 70px;
+  top: 85px;
   left: 165px;
   width: 260px;
   height: 10px;
@@ -55,13 +55,13 @@ const StyledPercentageContent = styled.div`
   background-color: ${({ theme }) => theme.cyan};
 `;
 
-const StyledParagraph = styled.p`
-  position: absolute;
-  margin: 85px 165px;
-  font-size: 12px;
-  font-weight: ${({ theme }) => theme.regular};
-  text-transform: uppercase;
-`;
+// const StyledParagraph = styled.p`
+//   position: absolute;
+//   margin: 85px 165px;
+//   font-size: 12px;
+//   font-weight: ${({ theme }) => theme.regular};
+//   text-transform: uppercase;
+// `;
 
 const DictionaryTitle = ({ title, image, knownWords, wordsCount }) => (
   <StyledWrapper>
@@ -70,7 +70,6 @@ const DictionaryTitle = ({ title, image, knownWords, wordsCount }) => (
     <StyledProgresBorder>
       <StyledPercentageContent knownWords={knownWords} wordsCount={wordsCount} />
     </StyledProgresBorder>
-    <StyledParagraph>learn from beginning</StyledParagraph>
   </StyledWrapper>
 );
 
