@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Form, Formik } from 'formik';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Avatar from '../../atoms/Avatar/Avatar';
 import Heading from '../../atoms/Heading/Heading';
@@ -80,6 +82,7 @@ const StyledInput = styled(Input)`
   margin: 40px auto;
   width: 340px;
   display: block;
+  text-transform: uppercase;
   ::placeholder {
     text-align: center;
   }
@@ -88,13 +91,20 @@ const StyledInput = styled(Input)`
 const StyledButton = styled(Button)`
   display: flex;
   margin: 0 auto;
-  display: block;
+  text-decoration: none;
 `;
 
 class WordCard extends Component {
   state = {
     checkingCard: false,
     correct: true,
+    unknownWord: {
+      dictID: '',
+      id: '',
+      word: '',
+      translation: '',
+      known: false,
+    },
     unknownWords: [
       {
         dictID: '',
@@ -106,46 +116,88 @@ class WordCard extends Component {
     ],
   };
 
-  componentDidMount() {
-    this.setState({ unknownWords: this.props.words.filter((item) => !item.known) });
+  async componentDidMount() {
+    await this.setState({
+      unknownWords: this.props.words.filter((item) => !item.known),
+    });
+    this.getRandomUnknownWord();
   }
 
   getRandomUnknownWord = () => {
-    var randomIndex = this.state.unknownWords[
+    const randomIndex = this.state.unknownWords[
       Math.floor(Math.random() * this.state.unknownWords.length)
     ];
-    return randomIndex;
+    this.setState({ unknownWord: randomIndex });
+  };
+
+  handleNextButton = () => {
+    this.setState({ checkingCard: false });
+    this.componentDidMount();
   };
 
   render() {
-    const { checkingCard, correct } = this.state;
-    const { dictName, dictImage } = this.props;
+    const { checkingCard, correct, unknownWord } = this.state;
+    const { dictName, dictImage, dictID } = this.props;
     return (
       <StyledWrapper>
         <StyledHeading>
-          {console.log(this.state.unknownWords)}
           <StyledTitle>{dictName}</StyledTitle>
           <StyledAvatar color="cyan" src={dictImage} />
         </StyledHeading>
         {this.state.unknownWords.length ? (
           <StyledCardContent>
-            <StyledWord>{this.getRandomUnknownWord().word}</StyledWord>
+            <StyledWord>{unknownWord.word}</StyledWord>
             {!checkingCard ? (
-              <>
-                <StyledInput placeholder="translation" />
-                <StyledButton>check</StyledButton>
-              </>
+              <Formik
+                initialValues={{
+                  translation: '',
+                }}
+                onSubmit={(values) => {
+                  this.setState({ checkingCard: true });
+                  if (
+                    values.translation.toUpperCase().trim() ===
+                    unknownWord.translation.toUpperCase().trim()
+                  ) {
+                    this.setState({ correct: true });
+                    this.setState((prevState) => ({
+                      unknownWords: prevState.unknownWords.filter(
+                        (item) => item.word !== this.state.unknownWord.word,
+                      ),
+                    }));
+                  } else {
+                    this.setState({ correct: false });
+                  }
+                }}
+              >
+                {({ values, handleChange, handleBlur, onSubmit }) => (
+                  <Form>
+                    <StyledInput
+                      autoComplete="off"
+                      type="text"
+                      name={'translation'}
+                      placeholder={'Translation'}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.translation}
+                      onSubmit={onSubmit}
+                    />
+                    <StyledButton type="submit">check</StyledButton>
+                  </Form>
+                )}
+              </Formik>
             ) : (
               <>
-                <StyledAnswer passed={correct}> - Translation</StyledAnswer>
-                <StyledButton>next</StyledButton>
+                <StyledAnswer passed={correct}> - {unknownWord.translation}</StyledAnswer>
+                <StyledButton onClick={() => this.handleNextButton()}>next</StyledButton>
               </>
             )}
           </StyledCardContent>
         ) : (
           <StyledCardContent>
             <StyledWord>No more words to learn</StyledWord>
-            <StyledButton>Back</StyledButton>
+            <StyledButton as={NavLink} to={`/dictionary/${dictID}`}>
+              Back
+            </StyledButton>
           </StyledCardContent>
         )}
       </StyledWrapper>

@@ -12,13 +12,14 @@ const StyledWordCard = styled(WordCard)`
 class LearningView extends Component {
   render() {
     const [currentDictionary] = this.props.dictionary;
-    const { currentWords } = this.props;
+    const { currentWords, match } = this.props;
     return (
       <LoggedUserView>
         <StyledWordCard
           dictName={currentDictionary.name}
           dictImage={currentDictionary.image}
           words={currentWords}
+          dictID={match.params.id}
         />
       </LoggedUserView>
     );
