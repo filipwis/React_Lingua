@@ -8,6 +8,8 @@ import DictionaryWord from '../components/organisms/DictionaryWord/DictionaryWor
 import { Redirect } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import bulbIcon from '../assets/images/bulb.png';
+import { fetchWords } from '../actions';
+import Axios from 'axios';
 
 const StyledButton = styled.button`
   position: fixed;
@@ -79,25 +81,46 @@ const StyledEmptyText = styled.div`
 
 class DictionaryView extends Component {
   state = {
+    currentDictionary: {
+      imageUrl: '',
+      name: '',
+      userID: '',
+    },
     isWordBarVisible: false,
   };
+
+  componentDidMount() {
+    console.log(this.props.dictionary);
+    console.log(this.props.words);
+    if (this.props.dictionary) {
+      const [dictionary] = this.props.dictionary;
+
+      this.setState({ currentDictionary: dictionary });
+    } else {
+      const { id } = this.props.match.params;
+      Axios.get(`http://localhost:9000/api/dictionary/${id}`)
+        .then(({ data }) => this.setState({ currentDictionary: data }))
+        .catch((err) => console.log(err));
+    }
+    this.props.fetchWords();
+  }
 
   handleWordBar = () => {
     this.setState((prevState) => ({ isWordBarVisible: !prevState.isWordBarVisible }));
   };
 
   getKnownWords = () => {
-    const { currentWords } = this.props;
+    const { words } = this.props;
     let i = 0;
-    currentWords.forEach((element) => {
+    words.forEach((element) => {
       element.known && i++;
     });
     return i;
   };
 
   render() {
-    const { currentWords } = this.props;
-    const [currentDictionary] = this.props.dictionary;
+    const { words } = this.props;
+    const { currentDictionary } = this.state;
     this.getKnownWords();
     if (this.state.redirect) {
       return <Redirect to={`/learning/${currentDictionary.id}`} />;
@@ -106,23 +129,23 @@ class DictionaryView extends Component {
       <>
         <LoggedUserView />
         <DictionaryTitle
-          image={currentDictionary.image}
+          image={currentDictionary.imageUrl}
           title={currentDictionary.name}
           knownWords={this.getKnownWords()}
-          wordsCount={currentWords.length}
+          wordsCount={words.length}
         />
         <StyledButton as={NavLink} to={`/learning/${currentDictionary.id}`}>
           Start to learn
         </StyledButton>
         <StyledWrapper>
-          {currentWords.length ? (
-            currentWords.map((item) => (
+          {words.length ? (
+            words.map((item) => (
               <DictionaryWord
-                key={item.id}
+                key={item._id}
                 word={item.word}
                 known={item.known}
                 translation={item.translation}
-                id={item.id}
+                id={item._id}
               />
             ))
           ) : (
@@ -138,13 +161,24 @@ class DictionaryView extends Component {
     );
   }
 }
+DictionaryView.defaultProps = {
+  dictionaries: [],
+  words: [],
+};
 
 const mapStateToProps = (state, ownProps) => {
   const { words, dictionaries } = state;
-  return {
-    currentWords: words.filter((word) => word.dictID === ownProps.match.params.id),
-    dictionary: dictionaries.filter((dictionary) => dictionary.id === ownProps.match.params.id),
-  };
+  if (dictionaries) {
+    return {
+      dictionary: dictionaries.filter((dictionary) => dictionary._id === ownProps.match.params.id),
+      words,
+    };
+  }
+  return { words };
 };
 
-export default connect(mapStateToProps)(DictionaryView);
+const mapDispatchToProps = (dispatch, ownProps) => ({
+  fetchWords: () => dispatch(fetchWords(ownProps.match.params.id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DictionaryView);

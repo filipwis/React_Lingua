@@ -53,10 +53,14 @@ const StyledInput = styled(Input)`
 const StyledButton = styled(Button)`
   margin-top: 40px;
 `;
-const StyledParagraph = styled.p`
+const StyledParagraphButton = styled.button`
+  margin-top: 15px;
   bottom: 120px;
   right: 80px;
   font-size: 13px;
+  background-color: transparent;
+  border: none;
+  font-family: 'Montserrat';
   font-weight: ${({ theme }) => theme.bold};
 `;
 
@@ -65,8 +69,11 @@ class LoginRegisterView extends Component {
     registerView: false,
   };
 
-  handleViewType = () => {
-    this.setState((prevState) => ({ registerView: !prevState.registerView }));
+  handleViewType = (e) => {
+    e.preventDefault();
+    this.setState((prevState) => ({
+      registerView: !prevState.registerView,
+    }));
   };
 
   render() {
@@ -83,32 +90,43 @@ class LoginRegisterView extends Component {
         >
           {({ handleChange, handleBlur, values }) => {
             if (userID) {
-              return <Redirect to="/" />;
+              return <Redirect to="/dictionaries" />;
             }
-            <StyledForm>
-              <StyledHeading black>{registerView ? 'Create account' : 'Sign in'}</StyledHeading>
-              <StyledInput
-                type="text"
-                name="username"
-                placeholder="E-mail"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.title}
-              />
-              <StyledInput
-                type="password"
-                name="password"
-                placeholder="Password"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.title}
-              />
-              {registerView && <StyledInput placeholder="Confirm password" />}
-              <StyledButton>Log in</StyledButton>
-              <StyledParagraph onClick={() => this.handleViewType()}>
-                {registerView ? 'I want to log in' : 'I want my account!'}
-              </StyledParagraph>
-            </StyledForm>;
+            return (
+              <StyledForm autoComplete="off">
+                <StyledHeading black>{registerView ? 'Create account' : 'Sign in'}</StyledHeading>
+                <StyledInput
+                  type="text"
+                  name="username"
+                  placeholder="E-mail"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.username}
+                />
+                <StyledInput
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
+                />
+                {registerView && (
+                  <StyledInput
+                    type="password"
+                    name="password"
+                    placeholder="Confirm password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                  />
+                )}
+                <StyledButton type="submit">{registerView ? 'Sign up' : 'Log in'}</StyledButton>
+                <StyledParagraphButton onClick={this.handleViewType}>
+                  {registerView ? 'I want to log in' : 'I want my account!'}
+                </StyledParagraphButton>
+              </StyledForm>
+            );
           }}
         </Formik>
       </StyledWrapper>

@@ -38,7 +38,7 @@ const StyledLogoutIcon = styled(ButtonIcon)`
 const Bar = () => (
   <>
     <StyledWrapper>
-      <StyledLogo to="/" />
+      <StyledLogo to="/dictionaries" />
       <StyledLogoutIcon icon={logoutIcon} />
     </StyledWrapper>
   </>

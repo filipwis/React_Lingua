@@ -7,6 +7,12 @@ export const REMOVE_WORD = 'REMOVE_WORD';
 export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAILURE = 'AUTH_FAILURE';
+export const DICTIONARY_FETCH_REQUEST = 'DICTIONARY_FETCH_REQUEST';
+export const DICTIONARY_FETCH_SUCCESS = 'DICTIONARY_FETCH_SUCCESS';
+export const DICTIONARY_FETCH_FAILURE = 'DICTIONARY_FETCH_FAILURE';
+export const WORD_FETCH_REQUEST = 'WORD_FETCH_REQUEST';
+export const WORD_FETCH_SUCCESS = 'WORD_FETCH_SUCCESS';
+export const WORD_FETCH_FAILURE = 'WORD_FETCH_FAILURE';
 
 export const authenticate = (username, password) => (dispatch) => {
   dispatch({ type: AUTH_REQUEST });
@@ -21,6 +27,40 @@ export const authenticate = (username, password) => (dispatch) => {
     .catch((err) => {
       console.log(err);
       dispatch({ type: AUTH_FAILURE });
+    });
+};
+
+export const fetchDictionaries = () => (dispatch, getState) => {
+  dispatch({ type: DICTIONARY_FETCH_REQUEST });
+  return Axios.get('http://localhost:9000/api/dictionaries', {
+    params: {
+      userID: getState().userID,
+    },
+  })
+    .then((payload) => {
+      console.log(payload);
+      dispatch({ type: DICTIONARY_FETCH_SUCCESS, payload });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: DICTIONARY_FETCH_FAILURE });
+    });
+};
+
+export const fetchWords = (id) => (dispatch) => {
+  dispatch({ type: WORD_FETCH_REQUEST });
+  return Axios.get('http://localhost:9000/api/words', {
+    params: {
+      dictID: id,
+    },
+  })
+    .then((payload) => {
+      console.log(payload);
+      dispatch({ type: WORD_FETCH_SUCCESS, payload });
+    })
+    .catch((err) => {
+      console.log(err);
+      dispatch({ type: WORD_FETCH_FAILURE });
     });
 };
 

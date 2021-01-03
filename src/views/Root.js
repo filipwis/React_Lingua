@@ -13,8 +13,8 @@ const Root = () => (
     <BrowserRouter>
       <MainTemplate>
         <Switch>
-          <Route exact path="/" component={DictionariesList} />
-          <Route exact path="/login" component={LoginRegisterView} />
+          <Route exact path="/" component={LoginRegisterView} />
+          <Route exact path="/dictionaries" component={DictionariesList} />
           <Route path="/learning/:id" component={LearningView} />
           <Route exact path="/dictionary/:id" component={DictionaryView} />
         </Switch>

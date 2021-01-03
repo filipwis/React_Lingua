@@ -5,6 +5,7 @@ import LoggedUserView from '../templates/LoggedUserView';
 import DictionaryCard from '../components/molecules/DictionaryCard/DictionaryCard';
 import ButtonIcon from '../components/atoms/ButtonIcon/ButtonIcon';
 import Modal from '../components/organisms/Modal/Modal';
+import { fetchDictionaries } from '../actions';
 
 const StyledActionButton = styled(ButtonIcon)`
   position: fixed;
@@ -40,6 +41,10 @@ class DictionariesList extends Component {
     isModalOpen: false,
   };
 
+  componentDidMount() {
+    this.props.fetchDictionaries();
+  }
+
   handleModal = () => {
     this.setState((prevState) => ({
       isModalOpen: !prevState.isModalOpen,
@@ -57,7 +62,12 @@ class DictionariesList extends Component {
         <StyledWrapper isModalOpen={isModalOpen}>
           {dictionaries.length ? (
             dictionaries.map((item) => (
-              <DictionaryCard id={item.id} title={item.name} imageUrl={item.image} key={item.id} />
+              <DictionaryCard
+                id={item._id}
+                title={item.name}
+                imageUrl={item.imageUrl}
+                key={item._id}
+              />
             ))
           ) : (
             <StyledEmptyText>Create a new dictionary to expand your horizons... 🌍</StyledEmptyText>
@@ -68,9 +78,17 @@ class DictionariesList extends Component {
   }
 }
 
+DictionariesList.defaultProps = {
+  dictionaries: [],
+};
+
 const mapStateToProps = (state) => {
   const { dictionaries } = state;
   return { dictionaries };
 };
 
-export default connect(mapStateToProps)(DictionariesList);
+const mapDispatchToProps = (dispatch) => ({
+  fetchDictionaries: () => dispatch(fetchDictionaries()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DictionariesList);

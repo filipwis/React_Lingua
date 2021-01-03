@@ -14,6 +14,6 @@ const StyledWrapper = styled.div`
 
 storiesOf('Input', module)
   .addDecorator((story) => <StyledWrapper>{story()}</StyledWrapper>)
-  .add('Standard', () => <Input placeholder="Hello Filip" />)
+  .add('Standard', () => <Input placeholder="Lingua" />)
   .add('Search', () => <Input placeholder="Search" search />)
   .add('Translation', () => <Input placeholder="Search" trans />);
