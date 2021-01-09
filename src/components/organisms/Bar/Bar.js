@@ -39,7 +39,7 @@ const Bar = () => (
   <>
     <StyledWrapper>
       <StyledLogo to="/dictionaries" />
-      <StyledLogoutIcon icon={logoutIcon} />
+      <StyledLogoutIcon as={NavLink} to="/" icon={logoutIcon} />
     </StyledWrapper>
   </>
 );

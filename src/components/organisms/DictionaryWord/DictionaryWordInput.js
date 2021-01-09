@@ -117,12 +117,7 @@ const DictionaryWordInput = ({ isVisible, handleBar, addWord, dictID }) => (
       translation: '',
     }}
     onSubmit={(values, actions) => {
-      addWord({
-        word: values.word,
-        translation: values.translation,
-        known: false,
-        dictID,
-      });
+      addWord(values, dictID);
       actions.resetForm({
         values: {
           word: '',
@@ -174,7 +169,7 @@ const DictionaryWordInput = ({ isVisible, handleBar, addWord, dictID }) => (
 );
 
 const mapDispatchToProps = (dispatch) => ({
-  addWord: (content, dictID) => dispatch(addWordAction(content, dictID)),
+  addWord: (wordContent, dictID) => dispatch(addWordAction(wordContent, dictID)),
 });
 
 export default connect(null, mapDispatchToProps)(DictionaryWordInput);

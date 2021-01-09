@@ -70,17 +70,6 @@ const StyledCloseButton = styled.button`
   }
 `;
 
-// const StyledEditIcon = styled(ButtonIcon)`
-//   width: 30px;
-//   height: 30px;
-//   position: absolute;
-//   border-radius: 5px;
-//   background-color: ${({ theme }) => theme.yellow};
-//   background-size: 25px 25px;
-//   right: 55px;
-//   top: 25px;
-// `;
-
 const DictionaryWord = ({ word, translation, removeWord, id }) => (
   <StyledWrapper>
     <StyledWord>{word}</StyledWord>

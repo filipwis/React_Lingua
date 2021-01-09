@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import LoggedUserView from '../templates/LoggedUserView';
 import WordCard from '../components/molecules/WordCard/WordCard';
+import Axios from 'axios';
 
 const StyledWordCard = styled(WordCard)`
   position: absolute;
@@ -10,15 +11,34 @@ const StyledWordCard = styled(WordCard)`
 `;
 
 class LearningView extends Component {
+  state = {
+    currentDictionary: {
+      imageUrl: '',
+      name: '',
+      userID: '',
+    },
+  };
+
+  componentDidMount() {
+    if (this.props.dictionary) {
+      const [dictionary] = this.props.dictionary;
+      console.log(dictionary);
+      this.setState({ currentDictionary: dictionary });
+    } else {
+      const { id } = this.props.match.params;
+      Axios.get(`http://localhost:9000/api/dictionary/${id}`)
+        .then(({ data }) => this.setState({ currentDictionary: data }))
+        .catch((err) => console.log(err));
+    }
+  }
   render() {
-    const [currentDictionary] = this.props.dictionary;
-    const { currentWords, match } = this.props;
+    const { currentDictionary } = this.state;
+    const { match } = this.props;
     return (
       <LoggedUserView>
         <StyledWordCard
           dictName={currentDictionary.name}
-          dictImage={currentDictionary.image}
-          words={currentWords}
+          dictImage={currentDictionary.imageUrl}
           dictID={match.params.id}
         />
       </LoggedUserView>
@@ -26,12 +46,18 @@ class LearningView extends Component {
   }
 }
 
+LearningView.defaultProps = {
+  dictionaries: [],
+};
+
 const mapStateToProps = (state, ownProps) => {
-  const { words, dictionaries } = state;
-  return {
-    currentWords: words.filter((word) => word.dictID === ownProps.match.params.id),
-    dictionary: dictionaries.filter((dictionary) => dictionary.id === ownProps.match.params.id),
-  };
+  const { dictionaries } = state;
+  if (dictionaries) {
+    return {
+      dictionary: dictionaries.filter((dictionary) => dictionary._id === ownProps.match.params.id),
+    };
+  }
+  return {};
 };
 
 export default connect(mapStateToProps)(LearningView);

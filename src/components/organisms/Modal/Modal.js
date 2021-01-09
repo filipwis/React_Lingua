@@ -14,11 +14,11 @@ const StyledWrapper = styled.div`
     }
     100% {
       opacity: 1;
-      top: 450;
+      top: 400px;
     }
   }
   position: fixed;
-  top: 450px;
+  top: 400px;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 800px;
@@ -100,18 +100,14 @@ const Modal = ({ handleModal, addDictionary }) => (
     <Formik
       initialValues={{
         name: '',
-        image: '',
+        imageUrl: '',
       }}
       onSubmit={(values) => {
-        if (values.image === '') {
-          values.image =
+        if (values.imageUrl === '') {
+          values.imageUrl =
             'https://images.unsplash.com/photo-1562917616-88a9472dbfe5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80';
         }
-        addDictionary({
-          name: values.name,
-          image: values.image,
-          content: [],
-        });
+        addDictionary(values);
         handleModal();
       }}
     >
@@ -128,11 +124,11 @@ const Modal = ({ handleModal, addDictionary }) => (
           />
           <StyledInput
             type="text"
-            name="image"
+            name="imageUrl"
             placeholder="Dictionary's image url"
             onChange={handleChange}
             onBlur={handleBlur}
-            value={values.image}
+            value={values.imageUrl}
           />
           <StyledButton type="submit">Create</StyledButton>
         </StyledForm>
@@ -142,7 +138,7 @@ const Modal = ({ handleModal, addDictionary }) => (
 );
 
 const mapDispatchToProps = (dispatch) => ({
-  addDictionary: (content) => dispatch(addDictionaryAction(content)),
+  addDictionary: (dictionaryContent) => dispatch(addDictionaryAction(dictionaryContent)),
 });
 
 export default connect(null, mapDispatchToProps)(Modal);

@@ -5,10 +5,9 @@ import LoggedUserView from '../templates/LoggedUserView';
 import DictionaryWordInput from '../components/organisms/DictionaryWord/DictionaryWordInput';
 import { connect } from 'react-redux';
 import DictionaryWord from '../components/organisms/DictionaryWord/DictionaryWord';
-import { Redirect } from 'react-router';
 import { NavLink } from 'react-router-dom';
 import bulbIcon from '../assets/images/bulb.png';
-import { fetchWords } from '../actions';
+import { fetchWords as fetchWordsAction } from '../actions';
 import Axios from 'axios';
 
 const StyledButton = styled.button`
@@ -122,9 +121,6 @@ class DictionaryView extends Component {
     const { words } = this.props;
     const { currentDictionary } = this.state;
     this.getKnownWords();
-    if (this.state.redirect) {
-      return <Redirect to={`/learning/${currentDictionary.id}`} />;
-    }
     return (
       <>
         <LoggedUserView />
@@ -134,7 +130,7 @@ class DictionaryView extends Component {
           knownWords={this.getKnownWords()}
           wordsCount={words.length}
         />
-        <StyledButton as={NavLink} to={`/learning/${currentDictionary.id}`}>
+        <StyledButton as={NavLink} to={`/learning/${currentDictionary._id}`}>
           Start to learn
         </StyledButton>
         <StyledWrapper>
@@ -154,7 +150,7 @@ class DictionaryView extends Component {
           <DictionaryWordInput
             handleBar={this.handleWordBar}
             isVisible={this.state.isWordBarVisible}
-            dictID={currentDictionary.id}
+            dictID={currentDictionary._id}
           />
         </StyledWrapper>
       </>
@@ -178,7 +174,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchWords: () => dispatch(fetchWords(ownProps.match.params.id)),
+  fetchWords: () => dispatch(fetchWordsAction(ownProps.match.params.id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DictionaryView);

@@ -67,6 +67,7 @@ const StyledParagraphButton = styled.button`
 class LoginRegisterView extends Component {
   state = {
     registerView: false,
+    redirect: false,
   };
 
   handleViewType = (e) => {
@@ -83,13 +84,14 @@ class LoginRegisterView extends Component {
       <StyledWrapper>
         <StyledLogo src={logo} />
         <Formik
-          initialValues={{ username: '', password: '' }}
+          initialValues={{ username: '', password: '', confirmPassword: '' }}
           onSubmit={({ username, password }) => {
-            authenticate(username, password);
+            this.setState({ redirect: true });
+            // authenticate(username, password);
           }}
         >
           {({ handleChange, handleBlur, values }) => {
-            if (userID) {
+            if (this.state.redirect) {
               return <Redirect to="/dictionaries" />;
             }
             return (
@@ -114,11 +116,11 @@ class LoginRegisterView extends Component {
                 {registerView && (
                   <StyledInput
                     type="password"
-                    name="password"
+                    name="confirmPassword"
                     placeholder="Confirm password"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.password}
+                    value={values.confirmPassword}
                   />
                 )}
                 <StyledButton type="submit">{registerView ? 'Sign up' : 'Log in'}</StyledButton>

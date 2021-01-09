@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Form, Formik } from 'formik';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '../../atoms/Avatar/Avatar';
 import Heading from '../../atoms/Heading/Heading';
 import Input from '../../atoms/Input/Input';
 import Button from '../../atoms/Button/Button';
+import { updateWord as updateWordAction } from '../../../actions';
+import Axios from 'axios';
 
 const StyledWrapper = styled.div`
   @keyframes modalAppear {
@@ -103,7 +106,6 @@ class WordCard extends Component {
       id: '',
       word: '',
       translation: '',
-      known: false,
     },
     unknownWords: [
       {
@@ -111,17 +113,37 @@ class WordCard extends Component {
         id: '',
         word: '',
         translation: '',
-        known: false,
       },
     ],
+    wordsOfDictionary: [],
   };
 
   async componentDidMount() {
+    if (this.props.dictionary) {
+      const [words] = this.props.wordsOfDictionary;
+      this.setState({ currentDictionary: words });
+    } else {
+      await Axios.get('http://localhost:9000/api/words', {
+        params: {
+          dictID: this.props.dictID,
+        },
+      })
+        .then(({ data }) => this.setState({ wordsOfDictionary: data }))
+        .catch((err) => console.log(err));
+    }
     await this.setState({
-      unknownWords: this.props.words.filter((item) => !item.known),
+      unknownWords: this.state.wordsOfDictionary.filter((item) => !item.known),
     });
     this.getRandomUnknownWord();
   }
+
+  // async componentDidMount() {
+  //   await this.setState({
+  //     unknownWords: this.props.words.filter((item) => !item.known),
+  //   });
+  //   this.getRandomUnknownWord();
+  //   console.log(this.props.words);
+  // }
 
   getRandomUnknownWord = () => {
     const randomIndex = this.state.unknownWords[
@@ -136,10 +158,11 @@ class WordCard extends Component {
   };
 
   render() {
-    const { checkingCard, correct, unknownWord } = this.state;
-    const { dictName, dictImage, dictID } = this.props;
+    const { checkingCard, correct, unknownWord, wordsOfDictionary } = this.state;
+    const { dictName, dictImage, dictID, updateWord } = this.props;
     return (
       <StyledWrapper>
+        {console.log(wordsOfDictionary)}
         <StyledHeading>
           <StyledTitle>{dictName}</StyledTitle>
           <StyledAvatar color="cyan" src={dictImage} />
@@ -159,11 +182,7 @@ class WordCard extends Component {
                     unknownWord.translation.toUpperCase().trim()
                   ) {
                     this.setState({ correct: true });
-                    this.setState((prevState) => ({
-                      unknownWords: prevState.unknownWords.filter(
-                        (item) => item.word !== this.state.unknownWord.word,
-                      ),
-                    }));
+                    updateWord(unknownWord);
                   } else {
                     this.setState({ correct: false });
                   }
@@ -205,4 +224,18 @@ class WordCard extends Component {
   }
 }
 
-export default WordCard;
+const mapStateToProps = (state, ownProps) => {
+  const { words } = state;
+  if (words) {
+    return {
+      wordsOfDictionary: words.filter((word) => word.dictID === ownProps.dictID),
+    };
+  }
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  updateWord: (wordContent) => dispatch(updateWordAction(wordContent)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(WordCard);

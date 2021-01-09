@@ -49,6 +49,15 @@ const StyledHiddenMenu = styled(HiddenDotsMenu)`
   right: 0px;
 `;
 
+const StyledClickArea = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 120px;
+  width: 77vw;
+  border: none;
+`;
+
 class DictionaryCard extends Component {
   state = {
     redirect: false,
@@ -60,9 +69,11 @@ class DictionaryCard extends Component {
       return <Redirect to={`/dictionary/${id}`} />;
     }
     return (
-      <StyledWrapper onClick={this.handleCardClick}>
-        <StyledHeader>{title}</StyledHeader>
-        <StyledAvatar color="yellow" src={imageUrl} />
+      <StyledWrapper>
+        <StyledClickArea onClick={this.handleCardClick}>
+          <StyledHeader>{title}</StyledHeader>
+          <StyledAvatar color="yellow" src={imageUrl} />
+        </StyledClickArea>
         <StyledHiddenMenu id={id} editDictionary={this.props.editDictionary} />
       </StyledWrapper>
     );

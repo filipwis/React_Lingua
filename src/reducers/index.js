@@ -1,7 +1,18 @@
 import {
-  REMOVE_DICTIONARY,
+  REMOVE_DICTIONARY_SUCCESS,
+  REMOVE_DICTIONARY_REQUEST,
+  REMOVE_WORD_SUCCESS,
+  REMOVE_WORD_REQUEST,
   ADD_DICTIONARY,
-  ADD_WORD,
+  ADD_DICTIONARY_REQUEST,
+  ADD_DICTIONARY_SUCCESS,
+  ADD_DICTIONARY_FAILURE,
+  ADD_WORD_REQUEST,
+  ADD_WORD_SUCCESS,
+  ADD_WORD_FAILURE,
+  UPDATE_WORD_REQUEST,
+  UPDATE_WORD_SUCCESS,
+  UPDATE_WORD_FAILURE,
   REMOVE_WORD,
   AUTH_REQUEST,
   AUTH_SUCCESS,
@@ -238,25 +249,39 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         words: [...action.payload.data],
       };
-    case ADD_DICTIONARY:
+    case REMOVE_DICTIONARY_SUCCESS:
+      if (state.words) {
+        return {
+          ...state,
+          words: [...state.words.filter((item) => item.dictID !== action.payload.id)],
+          dictionaries: [...state.dictionaries.filter((item) => item._id !== action.payload.id)],
+        };
+      }
       return {
         ...state,
-        dictionaries: [...state.dictionaries, action.payload.item],
+        dictionaries: [...state.dictionaries.filter((item) => item._id !== action.payload.id)],
       };
-    case REMOVE_DICTIONARY:
+    case REMOVE_WORD_SUCCESS:
       return {
         ...state,
-        dictionaries: [...state.dictionaries.filter((item) => item.id !== action.payload.id)],
+        words: [...state.words.filter((item) => item._id !== action.payload.id)],
       };
-    case ADD_WORD:
+    case ADD_DICTIONARY_SUCCESS:
       return {
         ...state,
-        words: [...state.words, action.payload.item],
+        dictionaries: [...state.dictionaries, action.payload.data],
       };
-    case REMOVE_WORD:
+    case ADD_WORD_SUCCESS:
       return {
         ...state,
-        words: [...state.words.filter((item) => item.id !== action.payload.id)],
+        words: [...state.words, action.payload.data],
+      };
+    case UPDATE_WORD_SUCCESS:
+      return {
+        ...state,
+        words: state.words.map((word) =>
+          word._id === action.payload.id ? { ...word, known: true } : word,
+        ),
       };
     default:
       return state;
