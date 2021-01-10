@@ -9,6 +9,7 @@ import { NavLink } from 'react-router-dom';
 import bulbIcon from '../assets/images/bulb.png';
 import { fetchWords as fetchWordsAction } from '../actions';
 import Axios from 'axios';
+import Loader from '../components/organisms/Loader/Loader';
 
 const StyledButton = styled.button`
   position: fixed;
@@ -118,7 +119,7 @@ class DictionaryView extends Component {
   };
 
   render() {
-    const { words } = this.props;
+    const { words, isWordLoad } = this.props;
     const { currentDictionary } = this.state;
     this.getKnownWords();
     return (
@@ -135,15 +136,19 @@ class DictionaryView extends Component {
         </StyledButton>
         <StyledWrapper>
           {words.length ? (
-            words.map((item) => (
-              <DictionaryWord
-                key={item._id}
-                word={item.word}
-                known={item.known}
-                translation={item.translation}
-                id={item._id}
-              />
-            ))
+            isWordLoad ? (
+              <Loader />
+            ) : (
+              words.map((item) => (
+                <DictionaryWord
+                  key={item._id}
+                  word={item.word}
+                  known={item.known}
+                  translation={item.translation}
+                  id={item._id}
+                />
+              ))
+            )
           ) : (
             <StyledEmptyText>There's nothing here yet.</StyledEmptyText>
           )}
@@ -163,14 +168,15 @@ DictionaryView.defaultProps = {
 };
 
 const mapStateToProps = (state, ownProps) => {
-  const { words, dictionaries } = state;
+  const { words, dictionaries, isWordLoad } = state;
   if (dictionaries) {
     return {
       dictionary: dictionaries.filter((dictionary) => dictionary._id === ownProps.match.params.id),
       words,
+      isWordLoad,
     };
   }
-  return { words };
+  return { words, isWordLoad };
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({

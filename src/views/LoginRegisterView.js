@@ -11,6 +11,7 @@ import { authenticate as authenticateAction } from '../actions';
 import { Redirect } from 'react-router-dom';
 
 const StyledWrapper = styled.div`
+  margin: 0;
   width: 100%;
   height: 100vh;
   display: flex;

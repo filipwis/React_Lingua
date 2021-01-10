@@ -137,14 +137,6 @@ class WordCard extends Component {
     this.getRandomUnknownWord();
   }
 
-  // async componentDidMount() {
-  //   await this.setState({
-  //     unknownWords: this.props.words.filter((item) => !item.known),
-  //   });
-  //   this.getRandomUnknownWord();
-  //   console.log(this.props.words);
-  // }
-
   getRandomUnknownWord = () => {
     const randomIndex = this.state.unknownWords[
       Math.floor(Math.random() * this.state.unknownWords.length)

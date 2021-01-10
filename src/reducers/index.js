@@ -26,6 +26,8 @@ import {
 } from '../actions';
 const initialState = {
   userID: '5fecad52b2911e175096d723',
+  isLoading: false,
+  isWordLoad: false,
 };
 // {
 //   words: [
@@ -239,14 +241,26 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         userID: action.payload.data._id,
       };
+    case DICTIONARY_FETCH_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+      };
     case DICTIONARY_FETCH_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         dictionaries: [...action.payload.data],
+      };
+    case WORD_FETCH_REQUEST:
+      return {
+        ...state,
+        isWordLoad: true,
       };
     case WORD_FETCH_SUCCESS:
       return {
         ...state,
+        isWordLoad: false,
         words: [...action.payload.data],
       };
     case REMOVE_DICTIONARY_SUCCESS:
